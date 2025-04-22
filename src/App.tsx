@@ -3,17 +3,17 @@ import { useRef, useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
   const [transcript, setTranscript] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
-  const [voice, setVoice] = useState(null);
+  const [voice, setVoice] = useState<SpeechSynthesisVoice | undefined>();
 
   const [isRecording, setIsRecording] = useState(false);
   const [recorded, setRecorded] = useState(false);
   const [recordTime, setRecordTime] = useState(0);
-  const timerRef = useRef(null);
-  const recognitionRef = useRef(null);
+  const timerRef = useRef<any | null>(null);
+  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
     const synth = window.speechSynthesis;
@@ -51,13 +51,13 @@ function App() {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       const result = event.results[0][0].transcript;
       setTranscript(result);
       setRecorded(true);
     };
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: any) => {
       console.error('Erro:', event.error);
       setIsRecording(false);
       stopTimer();
@@ -75,7 +75,7 @@ function App() {
     startTimer();
   };
 
-  const speakText = (text) => {
+  const speakText = (text: any) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'pt-BR';
     utterance.rate = 1.5;
