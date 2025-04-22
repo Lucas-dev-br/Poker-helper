@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [image, setImage] = useState<string | null>(null);
+  // const [image, setImage] = useState<string | null>(null);
   const [transcript, setTranscript] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
@@ -101,10 +101,10 @@ function App() {
     const finalPrompt = transcript || generatePrompt();
 
     const formData = new FormData();
-    if (image) {
-      const fileBlob = await fetch(image).then(r => r.blob());
-      formData.append("image", fileBlob, "hand.png");
-    }
+    // if (image) {
+    //   const fileBlob = await fetch(image).then(r => r.blob());
+    //   formData.append("image", fileBlob, "hand.png");
+    // }
     formData.append("prompt", finalPrompt);
 
     try {
@@ -115,19 +115,11 @@ function App() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: image ? "gpt-4-vision-preview" : "gpt-4",
+          model: "gpt-4",
           messages: [
             {
               role: "user",
-              content: image ? [
-                {
-                  type: "text",
-                  text: `Você é um assistente de poker profissional. Analise a imagem da mão e considere também os seguintes dados adicionais: ${finalPrompt}.
-
-Dê uma resposta direta e técnica com a melhor jogada (fold, call, raise, all-in), explicando rapidamente a razão com base em ranges de push/fold e expectativa de vitória.`
-                },
-                { type: "image_url", image_url: { url: image } }
-              ] : `Você é um assistente de poker profissional. A situação é: ${finalPrompt}. 
+              content: `Você é um assistente de poker profissional. A situação é: ${finalPrompt}. 
 Diga a jogada ideal (fold, call, raise, all-in) de forma direta com a maior expectativa de vitória, considerando ranges padrão e ICM se necessário.`
             }
           ],
@@ -196,13 +188,13 @@ Diga a jogada ideal (fold, call, raise, all-in) de forma direta com a maior expe
             🔍 Analisar Jogada
           </button>
 
-          {image && (
+          {/* {image && (
             <img
               src={image}
               alt="Mão de poker"
               className="rounded-lg border border-gray-700 shadow mt-4"
             />
-          )}
+          )} */}
 
           {loading && <p className="text-sm text-gray-400 text-center">Analisando imagem e situação...</p>}
 
